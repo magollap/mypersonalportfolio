@@ -41,7 +41,7 @@ const fallback: PortfolioData = {
   socialLinks: [{ id: 'social1', label: 'LinkedIn', url: 'https://www.linkedin.com/in/gollapudi-manohar-3b023b1a', icon: 'linkedin', published: true, sort_order: 1 }],
 };
 
-function url(value: string | null | undefined): string | null { if (!value) return null; try { const parsed = new URL(value.trim(), window.location.origin); return ['http:', 'https:'].includes(parsed.protocol) || parsed.pathname.startsWith('/') ? parsed.href : null; } catch { return null; } }
+function url(value: string | null | undefined): string | null { if (!value) return null; const raw = value.trim(); if (!raw) return null; if (!raw.startsWith('/') && !/^https?:\/\//i.test(raw)) return null; try { const parsed = new URL(raw, window.location.origin); return parsed.protocol === 'http:' || parsed.protocol === 'https:' ? parsed.href : null; } catch { return null; } }
 
 function App() {
   const { data, loading, error, reload } = usePortfolio();
